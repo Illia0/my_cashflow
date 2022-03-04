@@ -1,8 +1,10 @@
 import telebot
 
-bot = telebot.TeleBot('1649114900:AAFiHXnaO_nLRxifiKJwKkUu2r_12M21ldQ')
+bot = telebot.TeleBot('5231795607:AAEx7PtuGz4MDSHf52R5nHl0VI6OAClets8')
 
 
-while True:
-    print("123")
+@bot.message_handler(commands=["start"])
+def start(m, res=False):
+    bot.send_message(m.chat.id, 'Я на связи. Напиши мне что-нибудь )')
+
 bot.polling()
