@@ -1,5 +1,6 @@
 import telebot
 import bdcore as bd
+import add_idea as aid
 from telebot import types
 
 bot = telebot.TeleBot('5231795607:AAEx7PtuGz4MDSHf52R5nHl0VI6OAClets8')
@@ -7,7 +8,7 @@ bot = telebot.TeleBot('5231795607:AAEx7PtuGz4MDSHf52R5nHl0VI6OAClets8')
 
 @bot.message_handler(commands=["start"])
 def start(m, res=False):
-    #bot.send_message(m.chat.id, 'Я на связи. Напиши мне что-нибудь )')
+    bot.send_message(m.chat.id, 'Я на связи. Напиши мне что-нибудь )')
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = ["Stonks"]
     keyboard.add(*buttons)
@@ -21,5 +22,8 @@ def handle_text(message):
         buttons = ["Добавить проект", "Редактировать проект"]
         keyboard.add(*buttons)
         bot.send_message(message.chat.id, "123", reply_markup=keyboard)
+    elif message.text.strip() == 'Добавить проект':
+        aid.add_idea(bot, message)
+
 
 bot.polling(none_stop=True, interval=0)

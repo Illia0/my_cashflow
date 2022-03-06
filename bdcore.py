@@ -36,7 +36,7 @@ def editCashflow(id,cashflow):
         f.write(str(cashflow))
 
 class projectC:
-    def __init__(self,name,category,description,percent_complete):
+    def __init__(self, name="", category="", description="", percent_complete=""):
         self.name = name
         self.category = category
         self.description = description
