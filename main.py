@@ -1,10 +1,8 @@
 import telebot
-import bdcore.py
+from bdcore import getstartmenu
 from telebot import types
 
 bot = telebot.TeleBot('5231795607:AAEx7PtuGz4MDSHf52R5nHl0VI6OAClets8')
-
-
 
 
 @bot.message_handler(commands=["start"])
@@ -21,6 +19,6 @@ def handle_text(message):
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         buttons = ["Добавить проект", "Редактировать проект"]
         keyboard.add(*buttons)
-        #bot.send_message(message.chat.id, "Панель редактирования", reply_markup=keyboard)
+        bot.send_message(message.chat.id, reply_markup=keyboard)
 
 bot.polling(none_stop=True, interval=0)
