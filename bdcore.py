@@ -49,7 +49,7 @@ class projectC:
         self.description = description
         self.percent_complete = percent_complete"""
 
-def getAllprojects(id):
+def getAllactvieprojects(id):
     file = "bd_mycashflow\\"
     file += id + "\\projects.txt"
     check_file = os.path.exists(file)
