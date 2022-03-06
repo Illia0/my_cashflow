@@ -1,17 +1,16 @@
 import os
 
 def getstartmenu(id):
-
     file="bd_mycashflow\\"
     file+=id
-    file += ".txt"
+    file += "\\cashflow.txt"
     print(id)
     check_file = os.path.exists(file)
     if check_file:
         with open(file, "r") as f:
             for line in f:
                 #formation retext
-                print(line)
+                retext="CashFlow: "+line+"грн/мес"
     else : retext="У вас нет CashFlow"
     return retext
 
@@ -23,7 +22,7 @@ def editCashflow(id,cashflow):
     file+=id+"\\cashflow.txt"
     check_file = os.path.exists(file)
     if check_file == 0:
-        print("file not find")
+        print("file not find/create")
         path = "bd_mycashflow\\"
         path+=id
         try:
@@ -43,11 +42,6 @@ class projectC:
     cashflow = ""
     def __init__(self):
         pass
-        """,name,category,description,percent_complete
-        self.name = name
-        self.category = category
-        self.description = description
-        self.percent_complete = percent_complete"""
 
 def getAllactvieprojects(id):
     file = "bd_mycashflow\\"
@@ -65,9 +59,9 @@ def getAllactvieprojects(id):
                 if i == 0:
                     projects[j].name = line
                 elif i == 1:
-                    projects[j].category = line
-                elif i == 2:
                     projects[j].description = line
+                elif i == 2:
+                    projects[j].category = line
                 elif i == 3:
                     projects[j].cashflow = line
                 elif i == 4:
@@ -79,10 +73,10 @@ def getAllactvieprojects(id):
         retext = ""
         for i in range(len(projects)-1):
             retext+=projects[i].name
-            retext+="\nкатегория: "
+            retext+="категория: "
             retext += projects[i].category
-            retext += "\ncashflow: "
-            retext += projects[i].cashflow
+            retext += "cashflow: "
+            retext += projects[i].cashflow.rstrip('\n')
             retext += "грн/мес\nреализованость пректа: "
             retext += projects[i].percent_complete
             retext += "\n***********\n"
@@ -108,3 +102,51 @@ def buttonprojects(id):
     return projects
 def editproject(id,number,editproj):
     a=1
+
+def craetenewproject(id,proj):
+    file = "bd_mycashflow\\"
+    file += id + "\\projects.txt"
+    check_file = os.path.exists(file)
+    if check_file == 0:
+        print("file not find/create")
+        path = "bd_mycashflow\\"
+        path += id
+        try:
+            os.mkdir(path)
+        except OSError:
+            print("Создать директорию %s не удалось" % path)
+        else:
+            print("Успешно создана директория %s " % path)
+    with open(file, "a") as f:
+        f.write(str(proj.name))
+        f.write("\n")
+        f.write(str(proj.description))
+        f.write("\n")
+        f.write(str(proj.category))
+        f.write("\n")
+        f.write(str(proj.cashflow))
+        f.write("\n")
+        f.write(str(proj.percent_complete))
+        f.write("\n")
+        file = "bd_mycashflow\\"
+        file += id + "\\cashflow.txt"
+        check_file = os.path.exists(file)
+        if check_file == 0:
+            print("file not find/create")
+            path = "bd_mycashflow\\"
+            path += id
+            try:
+                os.mkdir(path)
+            except OSError:
+                print("Создать директорию %s не удалось" % path)
+            else:
+                print("Успешно создана директория %s " % path)
+        with open(file, "r") as f:
+            for line in f:
+                cashflow=int(line)
+            cashflow+=int(proj.cashflow)
+        with open(file, "w") as f:
+            f.write(str(cashflow))
+
+
+
