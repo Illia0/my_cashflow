@@ -89,5 +89,22 @@ def getAllactvieprojects(id):
 
     return retext
 
-def editproject(id,number):
+def buttonprojects(id):
+    file = "bd_mycashflow\\"
+    file += id + "\\projects.txt"
+    check_file = os.path.exists(file)
+    projects = []
+    if check_file == 0:
+        retext = "У вас нет проектов"
+    else:
+        i = 0
+        with open(file, "r") as f:
+            for line in f:
+                if i == 0:
+                    projects.append(line)
+                elif i == 4:
+                    i = -1
+                i += 1
+    return projects
+def editproject(id,number,editproj):
     a=1
