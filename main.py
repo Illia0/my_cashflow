@@ -12,7 +12,7 @@ def start(m, res=False):
     buttons = ["Stonks"]
     keyboard.add(*buttons)
     bot.send_message(m.chat.id, bd.getstartmenu(str(m.from_user.id)), reply_markup=keyboard)
-    bd.editcashflow(str(m.from_user.id), 135)
+    bd.editCashflow(str(m.from_user.id), 135)
 
 @bot.message_handler(content_types=["text"])
 def handle_text(message):

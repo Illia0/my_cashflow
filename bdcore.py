@@ -15,7 +15,10 @@ def getstartmenu(id):
     else : retext="У вас нет CashFlow"
     return retext
 
-def editcashflow(id,cashflow):
+def getAccumulation(id):
+    return "nonCard"
+
+def editCashflow(id,cashflow):
     file="bd_mycashflow\\"
     file+=id+"\\cashflow.txt"
     check_file = os.path.exists(file)
@@ -31,3 +34,6 @@ def editcashflow(id,cashflow):
             print("Успешно создана директория %s " % path)
     with open(file, "w") as f:
         f.write(str(cashflow))
+
+def getallproject(id):
+    return 0
