@@ -17,9 +17,10 @@ def getstartmenu(id):
 
 def editcashflow(id,cashflow):
     file="bd_mycashflow\\"
-    file+=id+"cashflow.txt"
+    file+=id+"\\cashflow.txt"
     check_file = os.path.exists(file)
     if check_file == 0:
+        print("file not find")
         path = "bd_mycashflow\\"
         path+=id
         try:
@@ -29,4 +30,4 @@ def editcashflow(id,cashflow):
         else:
             print("Успешно создана директория %s " % path)
     with open(file, "w") as f:
-        f.write(cashflow)
+        f.write(str(cashflow))
