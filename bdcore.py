@@ -36,11 +36,21 @@ def editCashflow(id,cashflow):
         f.write(str(cashflow))
 
 class projectC:
-    def __init__(self,name,category,description,percent_complete):
+    name=""
+    category=""
+    description=""
+    percent_complete=""
+    cashflow = ""
+    def __init__(self):
+        pass
+        """,name,category,description,percent_complete
         self.name = name
         self.category = category
         self.description = description
-        self.percent_complete = percent_complete
+        self.percent_complete = percent_complete"""
+def outt(prr):
+    print(prr.name+"\n"+prr.category+"\n"+prr.description+"\n"+prr.percent_complete+"\n"+prr.cashflow+"\n")
+
 
 def getAllprojects(id):
     file = "bd_mycashflow\\"
@@ -52,28 +62,41 @@ def getAllprojects(id):
         projects = []
         i=0
         j=0
-        projects[j] = projectC()
+        projects.append(projectC())
+        #projects[j] = projectC()
         with open(file, "r") as f:
             for line in f:
-                match i:
-                    case 0:
-                        projects[j].name=line
-                    case 1:
-                        projects[j].category = line
-                    case 2:
-                        projects[j].description = line
-                    case 3:
-                        projects[j].cashflow = line
-                    case 4:
-                        projects[j].percent_complete=line
+                if i==0:
+                    projects[j].name = line
+                elif i==1:
+                    projects[j].category = line
+                elif i == 2:
+                    projects[j].description = line
+                elif i == 3:
+                    projects[j].cashflow = line
+                elif i == 4:
+                    projects[j].percent_complete = line
                 if i>4:
                     i-=4
                     j+=1
-                    projects[j]=projectC()
+                    projects.append(projectC())
+                    #projects[j]=projectC()
                 i+=1
                 #formation retext
-                print(line)
-    return 0
+        retext = ""
+        for i in range(len(projects)):
+            print(outt(projects[i]))
+            print("\n")
+            retext+=projects[i].name
+            retext+="\nкатегория: "
+            retext += projects[i].category
+            retext += "\ncashflow: "
+            retext += projects[i].cashflow
+            retext += "\nреализованость пректа: "
+            retext += projects[i].percent_complete
+            retext += "\n***********\n"
+
+    return retext
 
 def editproject(id,number):
     a=1
