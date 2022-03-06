@@ -20,6 +20,6 @@ def handle_text(message):
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         buttons = ["Добавить проект", "Редактировать проект"]
         keyboard.add(*buttons)
-        bot.send_message(m.chat.id, "Панель редактирования", reply_markup=keyboard)
+        bot.send_message(message.chat.id, "Панель редактирования", reply_markup=keyboard)
 
 bot.polling(none_stop=True, interval=0)
