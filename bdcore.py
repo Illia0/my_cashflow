@@ -48,9 +48,6 @@ class projectC:
         self.category = category
         self.description = description
         self.percent_complete = percent_complete"""
-def outt(prr):
-    print(prr.name+"\n"+prr.category+"\n"+prr.description+"\n"+prr.percent_complete+"\n"+prr.cashflow+"\n")
-
 
 def getAllprojects(id):
     file = "bd_mycashflow\\"
@@ -63,12 +60,11 @@ def getAllprojects(id):
         i=0
         j=0
         projects.append(projectC())
-        #projects[j] = projectC()
         with open(file, "r") as f:
             for line in f:
-                if i==0:
+                if i == 0:
                     projects[j].name = line
-                elif i==1:
+                elif i == 1:
                     projects[j].category = line
                 elif i == 2:
                     projects[j].description = line
@@ -76,23 +72,18 @@ def getAllprojects(id):
                     projects[j].cashflow = line
                 elif i == 4:
                     projects[j].percent_complete = line
-                if i>4:
-                    i-=4
-                    j+=1
+                    i = -1
+                    j += 1
                     projects.append(projectC())
-                    #projects[j]=projectC()
-                i+=1
-                #formation retext
+                i += 1
         retext = ""
-        for i in range(len(projects)):
-            print(outt(projects[i]))
-            print("\n")
+        for i in range(len(projects)-1):
             retext+=projects[i].name
             retext+="\nкатегория: "
             retext += projects[i].category
             retext += "\ncashflow: "
             retext += projects[i].cashflow
-            retext += "\nреализованость пректа: "
+            retext += "грн/мес\nреализованость пректа: "
             retext += projects[i].percent_complete
             retext += "\n***********\n"
 
