@@ -1,0 +1,2 @@
+def getstartmenu(id):
+    return ""
