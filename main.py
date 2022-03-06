@@ -11,7 +11,7 @@ def start(m, res=False):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = ["Stonks"]
     keyboard.add(*buttons)
-    bot.send_message(m.chat.id, bd.getstartmenu(m.chat.id), reply_markup=keyboard)
+    bot.send_message(m.chat.id, bd.getstartmenu(str(telebot.user.id)), reply_markup=keyboard)
 
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
@@ -19,6 +19,6 @@ def handle_text(message):
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         buttons = ["Добавить проект", "Редактировать проект"]
         keyboard.add(*buttons)
-        bot.send_message(message.chat.id, reply_markup=keyboard)
+        bot.send_message(message.chat.id, "123", reply_markup=keyboard)
 
 bot.polling(none_stop=True, interval=0)
