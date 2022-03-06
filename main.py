@@ -1,5 +1,5 @@
 import telebot
-from bdcore import getstartmenu
+import bdcore as bd
 from telebot import types
 
 bot = telebot.TeleBot('5231795607:AAEx7PtuGz4MDSHf52R5nHl0VI6OAClets8')
@@ -11,7 +11,7 @@ def start(m, res=False):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     buttons = ["Stonks"]
     keyboard.add(*buttons)
-    bot.send_message(m.chat.id, getstartmenu(m.chat.id), reply_markup=keyboard)
+    bot.send_message(m.chat.id, bd.getstartmenu(m.chat.id), reply_markup=keyboard)
 
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
