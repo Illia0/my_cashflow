@@ -105,7 +105,7 @@ def editproject(id,number,editproj):
 
 def craetenewproject(id,proj):
     file = "bd_mycashflow\\"
-    file += id + "\\projects.txt"
+    file += id + "\\newprojects.txt"
     check_file = os.path.exists(file)
     if check_file == 0:
         print("file not find/create")
@@ -128,25 +128,84 @@ def craetenewproject(id,proj):
         f.write("\n")
         f.write(str(proj.percent_complete))
         f.write("\n")
-        file = "bd_mycashflow\\"
-        file += id + "\\cashflow.txt"
-        check_file = os.path.exists(file)
-        if check_file == 0:
-            print("file not find/create")
-            path = "bd_mycashflow\\"
-            path += id
-            try:
-                os.mkdir(path)
-            except OSError:
-                print("Создать директорию %s не удалось" % path)
-            else:
-                print("Успешно создана директория %s " % path)
+"""file = "bd_mycashflow\\"
+file += id + "\\cashflow.txt"
+check_file = os.path.exists(file)
+if check_file == 0:
+    print("file not find/create")
+    path = "bd_mycashflow\\"
+    path += id
+    try:
+        os.mkdir(path)
+    except OSError:
+        print("Создать директорию %s не удалось" % path)
+    else:
+        print("Успешно создана директория %s " % path)
+with open(file, "r") as f:
+    for line in f:
+        cashflow=int(line)
+    cashflow+=int(proj.cashflow)
+with open(file, "w") as f:
+    f.write(str(cashflow))
+"""
+
+def getAllnewprojects(id):
+    file = "bd_mycashflow\\"
+    file += id + "\\newprojects.txt"
+    check_file = os.path.exists(file)
+    if check_file == 0:
+        retext="У вас нет проектов"
+    else:
+        projects = []
+        i=0
+        j=0
+        projects.append(projectC())
         with open(file, "r") as f:
             for line in f:
-                cashflow=int(line)
-            cashflow+=int(proj.cashflow)
-        with open(file, "w") as f:
-            f.write(str(cashflow))
+                if i == 0:
+                    projects[j].name = line
+                elif i == 1:
+                    projects[j].description = line
+                elif i == 2:
+                    projects[j].category = line
+                elif i == 3:
+                    projects[j].cashflow = line
+                elif i == 4:
+                    projects[j].percent_complete = line
+                    i = -1
+                    j += 1
+                    projects.append(projectC())
+                i += 1
+        retext = ""
+        for i in range(len(projects)-1):
+            retext+=projects[i].name
+            retext+="категория: "
+            retext += projects[i].category
+            retext += "cashflow: "
+            retext += projects[i].cashflow.rstrip('\n')
+            retext += "грн/мес\nреализованость пректа: "
+            retext += projects[i].percent_complete
+            retext += "\n***********\n"
 
+    return retext
 
+def buttonnewprojects(id):
+    file = "bd_mycashflow\\"
+    file += id + "\\newprojects.txt"
+    check_file = os.path.exists(file)
+    projects = []
+    if check_file == 0:
+        retext = "У вас нет проектов"
+    else:
+        i = 0
+        with open(file, "r") as f:
+            for line in f:
+                if i == 0:
+                    projects.append(line)
+                elif i == 4:
+                    i = -1
+                i += 1
+    return projects
 
+def newprdescription(id):
+    a=1

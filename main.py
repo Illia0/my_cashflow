@@ -15,6 +15,7 @@ class projectC:
 
 flags={}
 crproject={}
+newprnameedit={}
 
 @bot.message_handler(commands=["start"])
 def start(m, res=False):
@@ -26,7 +27,7 @@ def start(m, res=False):
     flags[str(m.from_user.id)] = 0
 
 
-#flags: 1=name 2=description 3=category 4=cashflow 5=percent complete
+#flags: 1=name 2=description 3=category 4=cashflow 5="новые проекты"
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     flag=flags.get(str(message.from_user.id),0)
@@ -49,6 +50,13 @@ def handle_text(message):
         flags[str(message.from_user.id)] = 0
         bd.craetenewproject(str(message.from_user.id), crproject[str(message.from_user.id)])
         bot.send_message(message.chat.id, "Записал)\n/start")
+    if flag == 5:
+        prname=bd.buttonnewprojects(str(message.from_user.id))
+        for i in range(len(prname)):
+            if prname[i]==message.text.strip():
+                bot.send_message(message.chat.id,bd.newprdescription(str(message.from_user.id)))
+
+                flags[str(message.from_user.id)] = 6
     elif message.text.strip() == 'Stonks':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         buttons = ["Добавить проект", "Редактировать проект","Взятся за резервы"]
@@ -65,6 +73,13 @@ def handle_text(message):
         buttons = bd.buttonprojects(str(message.from_user.id))
         keyboard.add(*buttons)
         bot.send_message(message.chat.id, textm, reply_markup=keyboard)
+    elif message.text.strip() == "новые \nпроекты":
+        textm ="Выберите проект:\n" +  bd.getAllnewprojects(str(message.from_user.id))
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        buttons = bd.buttonnewprojects(str(message.from_user.id))
+        keyboard.add(*buttons)
+        bot.send_message(message.chat.id, textm, reply_markup=keyboard)
+        flags[str(message.from_user.id)] = 5
     elif message.text.strip() == 'Добавить проект':
         bot.send_message(message.chat.id, "Как назовем проект?", reply_markup=types.ReplyKeyboardRemove())
         flags[str(message.from_user.id)]=1
