@@ -16,6 +16,7 @@ class projectC:
 flags={}
 crproject={}
 newprnameedit={}
+whatadeitinnew={}
 
 @bot.message_handler(commands=["start"])
 def start(m, res=False):
@@ -27,7 +28,7 @@ def start(m, res=False):
     flags[str(m.from_user.id)] = 0
 
 
-#flags: 1=name 2=description 3=category 4=cashflow 5="новые проекты"
+#flags: 1=name 2=description 3=category 4=cashflow 5="новые проекты" 6=twoclick
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     flag=flags.get(str(message.from_user.id),0)
@@ -36,27 +37,69 @@ def handle_text(message):
         crproject[str(message.from_user.id)].name=message.text.strip()
         bot.send_message(message.chat.id, "Опиши проект?")
         flags[str(message.from_user.id)] = 2
-    if flag == 2:
+    elif flag == 2:
         crproject[str(message.from_user.id)].description=message.text.strip()
         bot.send_message(message.chat.id, "Из какой категории проект?")
         flags[str(message.from_user.id)] = 3
-    if flag == 3:
+    elif flag == 3:
         crproject[str(message.from_user.id)].category=message.text.strip()
         bot.send_message(message.chat.id, "Ожидаемый cashflow?")
         flags[str(message.from_user.id)] = 4
-    if flag == 4:
+    elif flag == 4:
         crproject[str(message.from_user.id)].cashflow=message.text.strip()
         crproject[str(message.from_user.id)].percent_complete = "0%"
         flags[str(message.from_user.id)] = 0
         bd.craetenewproject(str(message.from_user.id), crproject[str(message.from_user.id)])
         bot.send_message(message.chat.id, "Записал)\n/start")
-    if flag == 5:
+    elif flag == 5:
         prname=bd.buttonnewprojects(str(message.from_user.id))
         for i in range(len(prname)):
             if prname[i]==message.text.strip():
-                bot.send_message(message.chat.id,bd.newprdescription(str(message.from_user.id)))
-
+                bot.send_message(message.chat.id,bd.getnewprdescription(str(message.from_user.id),prname[i]))
+                newprnameedit[str(message.from_user.id)]=prname[i]
                 flags[str(message.from_user.id)] = 6
+    elif flag == 6:
+        if newprnameedit[str(message.from_user.id)] == message.text.strip():
+            keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            buttons = ["Название", "Категория", "cashflow","реализованость проекта","описание","выйти"]
+            keyboard.add(*buttons)
+            textm="что вы хотите изменить?\n"
+            textm+=bd.getnewprojectbyname(str(message.from_user.id),newprnameedit[str(message.from_user.id)])
+            textm+="\nописание:\n"
+            textm+=bd.getnewprdescription(id,newprnameedit[str(message.from_user.id)])
+            bot.send_message(message.chat.id, textm, reply_markup=keyboard)
+            flags[str(message.from_user.id)] = 7
+        else:
+            prname = bd.buttonnewprojects(str(message.from_user.id))
+            for i in range(len(prname)):
+                if prname[i] == message.text.strip():
+                    bot.send_message(message.chat.id, bd.newprdescription(str(message.from_user.id)))
+                    newprnameedit[str(message.from_user.id)] = prname[i]
+                    flags[str(message.from_user.id)] = 6
+    elif flag==7:
+        prclass=bd.getnewprojectclassbyname(str(message.from_user.id), newprnameedit[str(message.from_user.id)])
+        if message.text.strip() == "Название":
+            whatadeitinnew[str(message.from_user.id)]="Название"
+            flags[str(message.from_user.id)] = 7
+        elif message.text.strip() == "Категория":
+            whatadeitinnew[str(message.from_user.id)] ="Категория"
+            flags[str(message.from_user.id)] = 7
+        elif message.text.strip() == "cashflow":
+            whatadeitinnew[str(message.from_user.id)] ="cashflow"
+            flags[str(message.from_user.id)] = 7
+        elif message.text.strip() == "реализованость проекта":
+            whatadeitinnew[str(message.from_user.id)] ="реализованость проекта"
+            flags[str(message.from_user.id)] = 7
+        elif message.text.strip() == "описание":
+            whatadeitinnew[str(message.from_user.id)] ="описание"
+            flags[str(message.from_user.id)] = 7
+        elif message.text.strip() == "выйти":
+            keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+            buttons = ["Stonks"]
+            keyboard.add(*buttons)
+            bot.send_message(message.chat.id, bd.getstartmenu(str(message.from_user.id)), reply_markup=keyboard)
+            bot.send_message(message.chat.id, bd.getAllactvieprojects(str(message.from_user.id)), reply_markup=keyboard)
+            flags[str(message.from_user.id)] = 0
     elif message.text.strip() == 'Stonks':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         buttons = ["Добавить проект", "Редактировать проект","Взятся за резервы"]

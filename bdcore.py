@@ -100,8 +100,6 @@ def buttonprojects(id):
                     i = -1
                 i += 1
     return projects
-def editproject(id,number,editproj):
-    a=1
 
 def craetenewproject(id,proj):
     file = "bd_mycashflow\\"
@@ -207,5 +205,12 @@ def buttonnewprojects(id):
                 i += 1
     return projects
 
-def newprdescription(id):
+def getnewprdescription(id,name):
+    a=1
+def getnewprojectbyname(id,name):
+    a=1
+def getnewprojectclassbyname(id, name):
+    a = projectC()
+    return a
+def editproject(id,age,name):
     a=1
