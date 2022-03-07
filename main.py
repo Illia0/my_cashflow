@@ -1,6 +1,7 @@
 import telebot
 import bdcore as bd
 from telebot import types
+import Audio
 
 bot = telebot.TeleBot('5231795607:AAEx7PtuGz4MDSHf52R5nHl0VI6OAClets8')
 
@@ -83,6 +84,10 @@ def handle_text(message):
     elif message.text.strip() == 'Добавить проект':
         bot.send_message(message.chat.id, "Как назовем проект?", reply_markup=types.ReplyKeyboardRemove())
         flags[str(message.from_user.id)]=1
+
+@bot.message_handler(content_types=['voice'])
+def voice_processing(message):
+    bot.reply_to(message, Audio.audio_handler(bot, message))
 
 
 bot.polling(none_stop=True, interval=0)
