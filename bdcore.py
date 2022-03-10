@@ -206,11 +206,91 @@ def buttonnewprojects(id):
     return projects
 
 def getnewprdescription(id,name):
-    a=1
+    file = "bd_mycashflow\\"
+    file += id + "\\newprojects.txt"
+    check_file = os.path.exists(file)
+    if check_file == 0:
+        errtext="user "+id+" get newprdecription but he's dont have folder"
+        raise AssertionError(errtext)
+    else:
+        i = 0
+        ff=False
+        with open(file, "r") as f:
+            for line in f:
+                if i == 0 and line==name:
+                    ff=True
+                elif i == 1 and ff==True:
+                    des = line
+                    ff=False
+                elif i == 4:
+                    i = -1
+                i += 1
+    return des
+
 def getnewprojectbyname(id,name):
+    file = "bd_mycashflow\\"
+    file += id + "\\projects.txt"
+    check_file = os.path.exists(file)
+    if check_file == 0:
+        retext = "У вас нет проектов"
+    else:
+        project = projectC()
+        i = 0
+        ff = False
+        with open(file, "r") as f:
+            for line in f:
+                if i == 0 and line == name:
+                    ff = True
+                    project.name = line
+                elif i == 1 and ff == True:
+                    project.description = line
+                elif i == 2 and ff == True:
+                    project.category = line
+                elif i == 3 and ff == True:
+                    project.cashflow = line
+                elif i == 4 and ff == True:
+                    project.percent_complete = line
+                    i = -1
+                    ff = False
+                i += 1
+        retext = ""
+        retext += project.name
+        retext += "категория: "
+        retext += project.category
+        retext += "cashflow: "
+        retext += project.cashflow.rstrip('\n')
+        retext += "грн/мес\nреализованость пректа: "
+        retext += project.percent_complete
+        retext += "\n***********\n"
+
+    return retext
     a=1
 def getnewprojectclassbyname(id, name):
-    a = projectC()
-    return a
-def editproject(id,age,name):
+    file = "bd_mycashflow\\"
+    file += id + "\\newprojects.txt"
+    check_file = os.path.exists(file)
+    if check_file == 0:
+        retext = "У вас нет проектов"
+    else:
+        project=projectC()
+        i = 0
+        ff=False
+        with open(file, "r") as f:
+            for line in f:
+                if i == 0 and line == name:
+                    ff=True
+                    project.name = line
+                elif i == 1 and ff==True:
+                    project.description = line
+                elif i == 2 and ff==True:
+                    project.category = line
+                elif i == 3 and ff==True:
+                    project.cashflow = line
+                elif i == 4 and ff==True:
+                    project.percent_complete = line
+                    i = -1
+                    ff=False
+                i += 1
+    return project
+def editproject(id,age,name,newp):
     a=1

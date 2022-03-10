@@ -17,7 +17,7 @@ class projectC:
 flags={}
 crproject={}
 newprnameedit={}
-whatadeitinnew={}
+whateditinnew={}
 
 @bot.message_handler(commands=["start"])
 def start(m, res=False):
@@ -29,7 +29,7 @@ def start(m, res=False):
     flags[str(m.from_user.id)] = 0
 
 
-#flags: 1=name 2=description 3=category 4=cashflow 5="новые проекты" 6=twoclick
+#flags: 1=name 2=description 3=category 4=cashflow 5="новые проекты" 6=twoclick 7=twoclickname 8=inputnnewedit
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     flag=flags.get(str(message.from_user.id),0)
@@ -74,26 +74,36 @@ def handle_text(message):
             prname = bd.buttonnewprojects(str(message.from_user.id))
             for i in range(len(prname)):
                 if prname[i] == message.text.strip():
-                    bot.send_message(message.chat.id, bd.newprdescription(str(message.from_user.id)))
+                    bot.send_message(message.chat.id, bd.getnewprdescription(str(message.from_user.id),prname[i]))
                     newprnameedit[str(message.from_user.id)] = prname[i]
                     flags[str(message.from_user.id)] = 6
     elif flag==7:
         prclass=bd.getnewprojectclassbyname(str(message.from_user.id), newprnameedit[str(message.from_user.id)])
         if message.text.strip() == "Название":
-            whatadeitinnew[str(message.from_user.id)]="Название"
-            flags[str(message.from_user.id)] = 7
+            text="Название сейчас: "+ prclass.name+'\n'
+            bot.send_message(message.chat.id, text)
+            whateditinnew[str(message.from_user.id)]="Название"
+            flags[str(message.from_user.id)] = 8
         elif message.text.strip() == "Категория":
-            whatadeitinnew[str(message.from_user.id)] ="Категория"
-            flags[str(message.from_user.id)] = 7
+            text = "Категория сейчас: " + prclass.category + '\n'
+            bot.send_message(message.chat.id, text)
+            whateditinnew[str(message.from_user.id)] ="Категория"
+            flags[str(message.from_user.id)] = 8
         elif message.text.strip() == "cashflow":
-            whatadeitinnew[str(message.from_user.id)] ="cashflow"
-            flags[str(message.from_user.id)] = 7
+            text = "Cashflow сейчас: " + prclass.cashflow + '\n'
+            bot.send_message(message.chat.id, text)
+            whateditinnew[str(message.from_user.id)] = "cashflow"
+            flags[str(message.from_user.id)] = 8
         elif message.text.strip() == "реализованость проекта":
-            whatadeitinnew[str(message.from_user.id)] ="реализованость проекта"
-            flags[str(message.from_user.id)] = 7
+            text = "реализованость проекта сейчас: " + prclass.percent_complete + '\n'
+            bot.send_message(message.chat.id, text)
+            whateditinnew[str(message.from_user.id)] = "реализованость проекта"
+            flags[str(message.from_user.id)] = 8
         elif message.text.strip() == "описание":
-            whatadeitinnew[str(message.from_user.id)] ="описание"
-            flags[str(message.from_user.id)] = 7
+            text = "описание сейчас: " + prclass.description + '\n'
+            bot.send_message(message.chat.id, text)
+            whateditinnew[str(message.from_user.id)] = "описание"
+            flags[str(message.from_user.id)] = 8
         elif message.text.strip() == "выйти":
             keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
             buttons = ["Stonks"]
@@ -101,6 +111,20 @@ def handle_text(message):
             bot.send_message(message.chat.id, bd.getstartmenu(str(message.from_user.id)), reply_markup=keyboard)
             bot.send_message(message.chat.id, bd.getAllactvieprojects(str(message.from_user.id)), reply_markup=keyboard)
             flags[str(message.from_user.id)] = 0
+    elif flag==8:
+        pr = bd.getnewprojectclassbyname(str(message.from_user.id), newprnameedit[str(message.from_user.id)])
+        if whateditinnew[str(message.from_user.id)] == "Название":
+            pr.name = message.text.strip()
+        elif whateditinnew[str(message.from_user.id)] == "Категория":
+            pr.category = message.text.strip()
+        elif whateditinnew[str(message.from_user.id)] == "cashflow":
+            pr.cashflow = message.text.strip()
+        elif whateditinnew[str(message.from_user.id)] == "реализованость проекта":
+            pr.percent_complete = message.text.strip()
+        elif whateditinnew[str(message.from_user.id)] == "описание":
+            pr.description = message.text.strip()
+        bd.editproject(str(message.from_user.id), "new", newprnameedit[str(message.from_user.id)], pr)
+        flags[str(message.from_user.id)] = 0
     elif message.text.strip() == 'Stonks':
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
         buttons = ["Добавить проект", "Редактировать проект","Взятся за резервы"]
