@@ -1,7 +1,5 @@
 import os
 import speech_recognition as sr
-import pydub as pd
-import wavio
 
 
 language='ru_RU'
@@ -21,16 +19,13 @@ def recognise(filename):
 
 def audio_handler(bot, message):
     filename = str(message.from_user.id)
-    file_name_full="./Audio/voice/"+filename+".ogg"
-    file_name_full_converted="./Audio/ready/"+filename+".wav"
+    file_name_full=os.getcwd() + "\\Audio\\voice\\"+filename+".ogg"
+    file_name_full_converted=os.getcwd() +"\\Audio\\ready\\"+filename+".wav"
     file_info = bot.get_file(message.voice.file_id)
     downloaded_file = bot.download_file(file_info.file_path)
     with open(file_name_full, 'wb') as new_file:
         new_file.write(downloaded_file)
-    ttext="ffmpeg -i " + file_name_full + " -c:a pcm_f32le " + file_name_full_converted
-    os.system(str(ttext))
-    #data = pd.AudioSegment.from_ogg(file_name_full)
-    #data.export(file_name_full_converted, format="wav")
+    os.system(os.getcwd() + "\\ffmpeg-5.0-full_build\\bin\\ffmpeg.exe"+" -i " + file_name_full + " " + file_name_full_converted)
     text = recognise(file_name_full_converted)
     os.remove(file_name_full)
     os.remove(file_name_full_converted)
